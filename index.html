@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillTrack — Student Skill & Project Manager</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- App Container -->
+  <div class="app-layout">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="brand-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+          </div>
+          <div>
+            <h1 class="brand-title">SkillTrack</h1>
+            <span class="brand-badge">BCA Edition</span>
+          </div>
+        </div>
+        <button class="mobile-close-btn" id="mobileCloseBtn" aria-label="Close Sidebar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#dashboard" class="nav-link active" data-nav="dashboard">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="#skills-section" class="nav-link" data-nav="skills">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
+          <span>Skills Matrix</span>
+          <span class="nav-count" id="navSkillsCount">0</span>
+        </a>
+        <a href="#projects-section" class="nav-link" data-nav="projects">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <span>Project Lab</span>
+          <span class="nav-count" id="navProjectsCount">0</span>
+        </a>
+        <a href="#goals-section" class="nav-link" data-nav="goals">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
+            <path d="m9 12 2 2 4-4"></path>
+          </svg>
+          <span>Learning Goals</span>
+          <span class="nav-count" id="navGoalsCount">0</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="storage-indicator">
+          <div class="storage-text">
+            <span>Storage Status</span>
+            <strong id="storageStatusText">localStorage Active</strong>
+          </div>
+          <div class="storage-actions">
+            <button class="btn-subtle" id="resetDataBtn" title="Reset to Sample Student Data">Reset Demo</button>
+            <button class="btn-subtle" id="exportDataBtn" title="Export Data as JSON Backup">Export</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Overlay for mobile sidebar backdrop -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top Navigation & Action Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="menu-toggle-btn" id="menuToggleBtn" aria-label="Open Sidebar Menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <div class="greeting-box">
+            <h2 id="greetingHeading">Hello, Student Developer 👋</h2>
+            <p id="currentDateDisplay">Thursday, October 15</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <!-- Global Search Input -->
+          <div class="search-box">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="globalSearchInput" placeholder="Search skills, projects, goals..." aria-label="Search">
+            <button class="clear-search-btn" id="clearSearchBtn" aria-label="Clear Search" style="display: none;">&times;</button>
+          </div>
+
+          <!-- Theme Toggle Button -->
+          <button class="theme-toggle" id="themeToggleBtn" aria-label="Toggle Dark and Light Mode" title="Toggle Theme">
+            <span class="theme-icon light-icon">
+              <!-- Sun Icon -->
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+              </svg>
+            </span>
+            <span class="theme-icon dark-icon">
+              <!-- Moon Icon -->
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
+            </span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Dashboard Statistics Cards -->
+      <section class="stats-grid" id="dashboard">
+        <!-- Stat Card 1: Total Skills -->
+        <div class="stat-card">
+          <div class="stat-icon-wrapper stat-blue">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+          </div>
+          <div class="stat-details">
+            <span class="stat-label">Total Skills Tracked</span>
+            <h3 class="stat-number" id="statTotalSkills">0</h3>
+            <span class="stat-caption" id="statAvgProgress">0% Average Mastery</span>
+          </div>
+        </div>
+
+        <!-- Stat Card 2: Total Projects -->
+        <div class="stat-card">
+          <div class="stat-icon-wrapper stat-purple">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </div>
+          <div class="stat-details">
+            <span class="stat-label">Portfolio Projects</span>
+            <h3 class="stat-number" id="statTotalProjects">0</h3>
+            <span class="stat-caption" id="statActiveProjects">0 In Progress</span>
+          </div>
+        </div>
+
+        <!-- Stat Card 3: Goals Completed -->
+        <div class="stat-card">
+          <div class="stat-icon-wrapper stat-green">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+          <div class="stat-details">
+            <span class="stat-label">Learning Goals</span>
+            <h3 class="stat-number" id="statCompletedGoals">0 / 0</h3>
+            <span class="stat-caption" id="statGoalsPercent">0% Completed</span>
+          </div>
+        </div>
+
+        <!-- Stat Card 4: Top Skill / Readiness Score -->
+        <div class="stat-card">
+          <div class="stat-icon-wrapper stat-amber">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+            </svg>
+          </div>
+          <div class="stat-details">
+            <span class="stat-label">Top Skill Focus</span>
+            <h3 class="stat-number truncate" id="statTopSkillName">None Yet</h3>
+            <span class="stat-caption" id="statTopSkillLevel">0% Mastery</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Active Search Notification Banner -->
+      <div class="search-banner" id="searchBanner" style="display: none;">
+        <span>Showing results for "<strong id="searchQueryText"></strong>"</span>
+        <button class="btn-link" id="resetSearchBannerBtn">Clear filter</button>
+      </div>
+
+      <!-- Main Two-Column Layout Grid -->
+      <div class="dashboard-columns">
+        
+        <!-- Left Column: Skills & Projects -->
+        <div class="left-column">
+          
+          <!-- SECTION 1: SKILLS MANAGEMENT -->
+          <section class="content-card" id="skills-section">
+            <div class="card-header">
+              <div class="header-titles">
+                <h3>Technical Skills Matrix</h3>
+                <p>Track your programming languages, tools and mastery progress</p>
+              </div>
+              <div class="header-actions">
+                <!-- Skill Category Filter -->
+                <select id="skillCategoryFilter" class="filter-select" aria-label="Filter skills by category">
+                  <option value="all">All Categories</option>
+                  <option value="Frontend">Frontend</option>
+                  <option value="Backend">Backend</option>
+                  <option value="Database">Database</option>
+                  <option value="Languages">Languages</option>
+                  <option value="Tools & DevOps">Tools & DevOps</option>
+                  <option value="Core CS">Core CS (Data Structures / Algorithms)</option>
+                </select>
+                <button class="btn btn-primary" id="openAddSkillModalBtn">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                  <span>Add Skill</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Skills List Container -->
+            <div class="skills-list" id="skillsContainer">
+              <!-- Rendered via JavaScript -->
+            </div>
+          </section>
+
+          <!-- SECTION 2: PROJECT MANAGER -->
+          <section class="content-card" id="projects-section">
+            <div class="card-header">
+              <div class="header-titles">
+                <h3>Portfolio Projects</h3>
+                <p>Build and showcase hands-on student projects with tech stacks</p>
+              </div>
+              <div class="header-actions">
+                <!-- Project Status Filter Tabs -->
+                <div class="filter-pills" id="projectFilterPills">
+                  <button class="filter-pill active" data-status="all">All</button>
+                  <button class="filter-pill" data-status="In Progress">In Progress</button>
+                  <button class="filter-pill" data-status="Completed">Completed</button>
+                  <button class="filter-pill" data-status="Planned">Planned</button>
+                </div>
+                <button class="btn btn-primary" id="openAddProjectModalBtn">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                  <span>New Project</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Projects Grid Container -->
+            <div class="projects-grid" id="projectsContainer">
+              <!-- Rendered via JavaScript -->
+            </div>
+          </section>
+
+        </div>
+
+        <!-- Right Column: Learning Goals & Quick Tips -->
+        <div class="right-column">
+          
+          <!-- SECTION 3: LEARNING GOALS WITH CHECKBOXES -->
+          <section class="content-card goals-card" id="goals-section">
+            <div class="card-header">
+              <div class="header-titles">
+                <h3>Learning Goals</h3>
+                <p>Weekly targets & study roadmap</p>
+              </div>
+              <span class="badge badge-accent" id="goalsCounterBadge">0 of 0</span>
+            </div>
+
+            <!-- Goal Progress Meter -->
+            <div class="goal-progress-wrap">
+              <div class="goal-progress-bar">
+                <div class="goal-progress-fill" id="goalOverallBar" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- Inline Add Goal Form -->
+            <form class="add-goal-form" id="addGoalForm">
+              <div class="goal-input-group">
+                <input type="text" id="goalTextInput" placeholder="E.g. Learn JavaScript Promises & Async/Await" required maxlength="120" autocomplete="off">
+                <button type="submit" class="btn btn-primary btn-icon-only" title="Add Goal">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                </button>
+              </div>
+              <div class="goal-form-meta">
+                <label for="goalDueDateInput">Target Date (optional):</label>
+                <input type="date" id="goalDueDateInput">
+              </div>
+            </form>
+
+            <!-- Goals Filter & Search tabs -->
+            <div class="goals-toolbar">
+              <div class="filter-pills small" id="goalsFilterPills">
+                <button class="filter-pill active" data-goal-filter="all">All</button>
+                <button class="filter-pill" data-goal-filter="pending">Pending</button>
+                <button class="filter-pill" data-goal-filter="completed">Done</button>
+              </div>
+            </div>
+
+            <!-- Goals List -->
+            <div class="goals-list" id="goalsContainer">
+              <!-- Rendered via JavaScript -->
+            </div>
+          </section>
+
+          <!-- Student Developer Tips & Quick Guide -->
+          <section class="content-card info-card">
+            <div class="info-card-header">
+              <div class="info-icon">💡</div>
+              <h4>BCA Student Tips</h4>
+            </div>
+            <ul class="tips-list">
+              <li><strong>Consistency:</strong> Updating your skills weekly builds realistic self-assessment for campus interviews.</li>
+              <li><strong>Project Proof:</strong> Pair every skill > 60% with at least one practical portfolio project.</li>
+              <li><strong>Local Storage:</strong> Your data is saved safely right inside this browser. You can export a JSON backup anytime!</li>
+            </ul>
+          </section>
+
+        </div>
+      </div>
+
+      <!-- App Footer -->
+      <footer class="app-footer">
+        <p><strong>SkillTrack</strong> — Crafted with pure HTML, CSS, and Vanilla JavaScript. Zero frameworks, 100% beginner friendly.</p>
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- Modal 1: Add / Edit Skill Modal -->
+  <div class="modal-backdrop" id="skillModal" aria-hidden="true" role="dialog">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="skillModalTitle">Add New Skill</h3>
+        <button class="modal-close-btn" id="closeSkillModalBtn" aria-label="Close dialog">&times;</button>
+      </div>
+      
+      <form id="skillForm">
+        <!-- Hidden input to store editing ID (empty if adding) -->
+        <input type="hidden" id="skillEditId" value="">
+
+        <div class="form-group">
+          <label for="skillNameInput">Skill / Technology Name *</label>
+          <input type="text" id="skillNameInput" placeholder="e.g. JavaScript, Python, PostgreSQL, Git" required maxlength="50" autocomplete="off">
+          <span class="field-hint">Specify the programming language, framework, or core tool.</span>
+        </div>
+
+        <div class="form-group">
+          <label for="skillCategoryInput">Category *</label>
+          <select id="skillCategoryInput" required>
+            <option value="Frontend">Frontend Development</option>
+            <option value="Backend">Backend Development</option>
+            <option value="Database">Database & SQL</option>
+            <option value="Languages">Programming Languages</option>
+            <option value="Tools & DevOps">Tools, Git & DevOps</option>
+            <option value="Core CS">Core CS & Algorithms</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <div class="range-header">
+            <label for="skillProgressInput">Proficiency Progress (%) *</label>
+            <span class="range-value-bubble" id="skillRangeDisplay">50%</span>
+          </div>
+          <input type="range" id="skillProgressInput" min="0" max="100" step="5" value="50">
+          <div class="range-legend">
+            <span>0% Beginner</span>
+            <span>50% Intermediate</span>
+            <span>100% Mastered</span>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancelSkillModalBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveSkillSubmitBtn">Save Skill</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2: Add / Edit Project Modal -->
+  <div class="modal-backdrop" id="projectModal" aria-hidden="true" role="dialog">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="projectModalTitle">Add New Project</h3>
+        <button class="modal-close-btn" id="closeProjectModalBtn" aria-label="Close dialog">&times;</button>
+      </div>
+
+      <form id="projectForm">
+        <input type="hidden" id="projectEditId" value="">
+
+        <div class="form-group">
+          <label for="projectTitleInput">Project Title *</label>
+          <input type="text" id="projectTitleInput" placeholder="e.g. Student Attendance Management System" required maxlength="80" autocomplete="off">
+        </div>
+
+        <div class="form-group">
+          <label for="projectDescInput">Short Description *</label>
+          <textarea id="projectDescInput" rows="3" placeholder="Explain what problem this project solves and its key features..." required maxlength="300"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="projectTechInput">Technologies Used (comma separated) *</label>
+          <input type="text" id="projectTechInput" placeholder="e.g. HTML5, CSS3, JavaScript, LocalStorage" required maxlength="120" autocomplete="off">
+          <span class="field-hint">Separate each technology with a comma (e.g. Python, Flask, SQLite).</span>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="projectStatusInput">Project Status *</label>
+            <select id="projectStatusInput" required>
+              <option value="Planned">Planned (Idea)</option>
+              <option value="In Progress">In Progress (Active)</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="projectRepoInput">Repository / Source Link (optional)</label>
+            <input type="url" id="projectRepoInput" placeholder="https://github.com/username/project">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancelProjectModalBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveProjectSubmitBtn">Save Project</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Application Script -->
+  <script src="script.js"></script>
+</body>
+</html>
